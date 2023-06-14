@@ -343,5 +343,5 @@ class Ui_MainWindow(object):
         self.code1.setText(_translate("MainWindow", "Шифр Цезаря"))
         self.code2.setText(_translate("MainWindow", "Шифр замены с умножением"))
         self.code3.setText(_translate("MainWindow", "Шифр Виженера"))
-        self.code4.setText(_translate("MainWindow", "Табличная шифровка с ключевым словом"))
+        self.code4.setText(_translate("MainWindow", "XOR шифрование"))
         self.key.setPlaceholderText(_translate("MainWindow", "Введите ключ"))

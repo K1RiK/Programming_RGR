@@ -2,7 +2,7 @@
 from sys import exit, argv
 
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from rgr import Ui_MainWindow
+from gui import Ui_MainWindow
 from cesar import cesar_encode, cesar_decode
 from multymy import crypto, decrypto
 from vigener import vigener_encode, vigener_decode
