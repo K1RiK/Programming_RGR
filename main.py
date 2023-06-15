@@ -13,21 +13,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.updateTheme(self)
 
         self.light.clicked.connect(self.changeTheme)
-        
+
         self.encode.clicked.connect(self.text_encode)
         self.decode.clicked.connect(self.text_decode)
 
-        self.key.textChanged.connect(self.test)
+        self.key.textChanged.connect(self.key_enter_delete)
 
-    def test(self):
+    def result_text(self, func, key_only_int: bool = 0) -> str:
+        key = self.key.toPlainText()
+        itext = self.input.toPlainText()
+        if key_only_int:
+            self.output.setPlainText(func(itext, int(key)) if key.isdigit() else "Ошибка ключ должен быть числом!")
+        else:
+            self.output.setPlainText(func(itext, key))
+
+    def key_enter_delete(self):
         text = self.key.toPlainText()
         if '\n' in text:
             self.key.setPlainText(text.replace('\n', ''))
 
-    def changeTheme(self):  # TODO Сделать переключение тем
+    def changeTheme(self):
         if self.theme == 'dark':
             self.theme = 'light'
 
@@ -44,7 +51,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.decode_hover_backgroundcolor = (190, 190, 190)
             self.decode_pressed_backgroundcolor = (180, 180, 180)
 
-            self.footer_color = (18, 18, 18)
+            self.footer_color = (18, 18, 18, .8)
 
             self.theme_icon = "img/moon.png"
 
@@ -65,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.decode_hover_backgroundcolor = (30, 30, 30)
             self.decode_pressed_backgroundcolor = (15, 15, 15)
 
-            self.footer_color = (220, 220, 220)
+            self.footer_color = (220, 220, 220, .8)
 
             self.theme_icon = "img/sun.png"
 
@@ -73,45 +80,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         self.updateTheme(self)
 
-    def text_encode(self):  # TODO Сделать 4 шифрования текста
-        key = self.key.toPlainText()
-        input_text = self.input.toPlainText()
-        output = ''
+    def text_encode(self):
         if self.code1.isChecked():
-            if key.isdigit():
-                output = cesar_encode(input_text, int(key))
-            else:
-                output = "Ошибка ключ должен быть числом!"
+            self.result_text(cesar_encode, 1)
         elif self.code2.isChecked():
-            if key.isdigit():
-                output = crypto(input_text, int(key))
-            else:
-                output = "Ошибка ключ должен быть числом!"
+            self.result_text(crypto, 1)
         elif self.code3.isChecked():
-            output = vigener_encode(input_text, key)
+            self.result_text(vigener_encode)
         elif self.code4.isChecked():
-            output = encrypt_xor(input_text, key)
-        self.output.setPlainText(output)
+            self.result_text(encrypt_xor)
 
-    def text_decode(self):  # TODO Сделать 4 расшифрования текста
-        key = self.key.toPlainText()
-        input_text = self.input.toPlainText()
-        output = ''
+    def text_decode(self):
         if self.code1.isChecked():
-            if key.isdigit():
-                output = cesar_decode(input_text, int(key))
-            else:
-                output = "Ошибка ключ должен быть числом!"
+            self.result_text(cesar_decode, 1)
         elif self.code2.isChecked():
-            if key.isdigit():
-                output = decrypto(input_text, int(key))
-            else:
-                output = "Ошибка ключ должен быть числом!"
+            self.result_text(decrypto, 1)
         elif self.code3.isChecked():
-            output = vigener_decode(input_text, key)
+            self.result_text(vigener_decode)
         elif self.code4.isChecked():
-            output = encrypt_xor(input_text, key)
-        self.output.setPlainText(output)
+            self.result_text(encrypt_xor)
 
 
 def main():

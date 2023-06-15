@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from random import randrange, choice
+from random import choice
 
 crypto_dict = {'а': 100,
                'б': 101,
@@ -159,7 +159,8 @@ crypto_dict = {'а': 100,
                "'": 255,
                '\\': 256,
                '|': 257,
-               '\n': 258}
+               '\n': 258,
+               'И': 259}
 
 num_to_char = {'0': ('k', 'l', ';', ':', 'B', 'N'),
                '1': ('q', 'w', 'e', 'r', 'E', 'L'),
@@ -172,27 +173,32 @@ num_to_char = {'0': ('k', 'l', ';', ':', 'B', 'N'),
                '8': (']', '}', '=', '+', 'V', 'M'),
                '9': ('A', '_', '{', '[', ')', '(')}
 
+translate_string = ''.join([''.join(_) for _ in tuple(num_to_char.values())])
+
 
 def crypto(text: str, key: int) -> str:
-    crypto_list = []
+    crypto_list = ''
     key_value = key + (key >> 7)
     for s in text:
         if s not in crypto_dict.keys():
-            return f'Ошибка символа {s} нет в словаре!'
-        crypto_list.append(str(key_value * crypto_dict[s]))
-    output = ''.join(crypto_list)
-    for s in output:
-        output = output.replace(s, choice(num_to_char[s]), 1)
+            return f'Ошибка шифрования, символа {s} нет в словаре!\nПопробуйте другой символ или добавьте символ в словарь'
+        crypto_list += str(key_value * crypto_dict[s])
+    output = ''.join(map(lambda s: choice(num_to_char[s]), crypto_list))
     return output
 
 
 def decrypto(text: str, key: int) -> str:
+    if not text:
+        return ''
+    for s in text:
+        if s not in translate_string:
+            return f'Ошибка дешифровки, символа {s} нет в словаре для перевода!\n'
     for k, v in num_to_char.items():
         for s in v:
             text = text.replace(s, k)
-    crypto_list, decrypto_list = tuple(text), []
+    crypto_list, decrypto_list = text, ''
     start, end = 0, 2
-    select = int(''.join(crypto_list[start:end]))
+    select = int(crypto_list[start:end])
     key_value = key + (key >> 7)
     for i in crypto_list:
         try:
@@ -200,10 +206,10 @@ def decrypto(text: str, key: int) -> str:
                 start, end = end, end + 2
                 for k, v in crypto_dict.items():
                     if v == select / key_value:
-                        decrypto_list.append(k)
+                        decrypto_list += k
             else:
                 end += 1
-            select = int(''.join(crypto_list[start:end]))
+            select = int(crypto_list[start:end])
         except:
             break
     return ''.join(decrypto_list)

@@ -2,3 +2,4 @@ main.build
 main.dist
 main.onefile-build
 *.7z
+*.pyc
