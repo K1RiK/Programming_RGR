@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from random import choice
 
+# Крипто словарь
 crypto_dict = {'а': 100,
                'б': 101,
                'в': 102,
@@ -162,27 +163,29 @@ crypto_dict = {'а': 100,
                '\n': 258,
                'И': 259}
 
-num_to_char = {'0': ('k', 'l', ';', ':', 'B', 'N'),
-               '1': ('q', 'w', 'e', 'r', 'E', 'L'),
+# Словарь для перевода
+num_to_char = {'0': ('k', 'l', ';', ':', 'B', 'N', 'И'),
+               '1': ('q', 'w', 'e', 'r', 'E', 'L', 'Б'),
                '2': ('a', 's', 'd', 'f', 'Q', 'W', 'F'),
                '3': ('z', 'x', 'c', 'v', 'S', 'D', 'U'),
                '4': ('t', 'y', 'u', 'i', 'Z', 'X', 'C'),
                '5': ('g', 'h', 'j', 'G', 'T', 'Y', 'K'),
-               '6': ('b', 'n', 'm', ',', 'H', 'J'),
-               '7': ('.', '>', '?', '/', 'I', 'R'),
-               '8': (']', '}', '=', '+', 'V', 'M'),
-               '9': ('A', '_', '{', '[', ')', '(')}
+               '6': ('b', 'n', 'm', ',', 'H', 'J', 'Г'),
+               '7': ('.', '>', '?', '/', 'I', 'R', 'К'),
+               '8': (']', '}', '=', '+', 'V', 'M', 'Ъ'),
+               '9': ('A', '_', '{', '[', ')', '(', 'Ь')}
 
 translate_string = ''.join([''.join(_) for _ in tuple(num_to_char.values())])
 
 
 def crypto(text: str, key: int) -> str:
     crypto_list = ''
-    key_value = key + (key >> 7)
-    for s in text:
-        if s not in crypto_dict.keys():
-            return f'Ошибка шифрования, символа {s} нет в словаре!\nПопробуйте другой символ или добавьте символ в словарь'
-        crypto_list += str(key_value * crypto_dict[s])
+    key = key + (key >> 7)
+    for char in text:
+        if char not in crypto_dict.keys():
+            return f'Ошибка шифрования, символа {char} нет в словаре!\n\
+                    \rПопробуйте другой символ или добавьте символ в словарь'
+        crypto_list += str(key * crypto_dict[char])
     output = ''.join(map(lambda s: choice(num_to_char[s]), crypto_list))
     return output
 
@@ -190,23 +193,23 @@ def crypto(text: str, key: int) -> str:
 def decrypto(text: str, key: int) -> str:
     if not text:
         return ''
-    for s in text:
-        if s not in translate_string:
-            return f'Ошибка дешифровки, символа {s} нет в словаре для перевода!\n'
-    for k, v in num_to_char.items():
-        for s in v:
-            text = text.replace(s, k)
+    for char in text:
+        if char not in translate_string:
+            return f'Ошибка дешифровки, символа {char} нет в словаре для перевода!\n'
+    for keyword, value in num_to_char.items():
+        for char in value:
+            text = text.replace(char, keyword)
     crypto_list, decrypto_list = text, ''
     start, end = 0, 2
     select = int(crypto_list[start:end])
-    key_value = key + (key >> 7)
-    for i in crypto_list:
+    key = key + (key >> 7)
+    for _ in crypto_list:
         try:
-            if not select % key_value and len(str(select // key_value)) == 3:
+            if not select % key and len(str(select // key)) == 3:
                 start, end = end, end + 2
-                for k, v in crypto_dict.items():
-                    if v == select / key_value:
-                        decrypto_list += k
+                for keyword, value in crypto_dict.items():
+                    if value == select / key:
+                        decrypto_list += keyword
             else:
                 end += 1
             select = int(crypto_list[start:end])

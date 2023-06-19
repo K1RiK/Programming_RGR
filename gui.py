@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+""" Здесь описана вся графика(кнопки, окна ввода текста, постоянные надписи)
+и стили CSS(рамки, цвет текста, цвет заднего фона, шрифты и пр.) """
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -27,9 +31,6 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet("* {"
                                  "    font-size: 14px;"
                                  "}"
-                                 "QMainWindow {"
-                                 "    background-color: rgb(16, 16, 16);"
-                                 "}"
                                  "QPlainTextEdit {"
                                  "    background-color: rgb(240, 240, 240);"
                                  "}"
@@ -41,7 +42,7 @@ class Ui_MainWindow(object):
                                  "    font-family: Arial, sans-serif;"
                                  "}"
                                  "#centralwidget {"
-                                 f"   background-color: rgb{self.main_backgroundcolor};"
+                                 f"    background-color: rgb{self.main_backgroundcolor};"
                                  "    font-family: Arial, sans-serif;"
                                  "}"
                                  "#input, #output, #key {"
@@ -80,13 +81,13 @@ class Ui_MainWindow(object):
                                   "padding: 0px;"
                                   "margin: 0px;"
                                   "font-family: Arial, sans-serif;")
+
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(self.theme_icon), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.light.setIcon(icon)
         self.light.setIconSize(QtCore.QSize(32, 32))
 
     def setupUi(self, MainWindow):
-        #MainWindow.setWindowFlags(QtCore.Qt.FramelessWindowHint)
         MainWindow.setObjectName("MainWindow")
         MainWindow.setWindowModality(QtCore.Qt.WindowModal)
         MainWindow.resize(480, 640)
