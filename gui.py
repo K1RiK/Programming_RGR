@@ -49,29 +49,32 @@ class Ui_MainWindow(object):
                                  "    font-family: \"Lucida Console\", monospace;"
                                  f"   background-color: rgba{self.io_backgroundcolor};"
                                  f"   color: rgb{self.io_color};"
-                                 "    border: non"
+                                 "    border: none"
                                  "}"
                                  "#code1, #code2, #code3, #code4 {"
                                  f"   color: rgb{self.codes_color};"
                                  "    font-weight: 500;"
-                                 "    font-family: Arial, sans;"
+                                 "    font-family: Arial, sans-serif;"
                                  "}"
-                                 "#decode, #encode {"
+                                 "#input_file, #output_file {"
+                                 "    font-size: 12px;"
+                                 "}"
+                                 "#decode, #encode, #input_file, #output_file {"
                                  f"   color: rgb{self.decode_color};"
                                  f"   background-color: rgb{self.decode_backgroundcolor};"
                                  f"   border: 3px solid rgb{self.decode_border_color};"
-                                 "    border-radius: 16px;"
                                  "    font-family: \"Arial Black\", sans-serif;"
                                  "}"
-                                 "#decode:hover, #encode:hover {"
+                                 "#decode:hover, #encode:hover, #input_file:hover, #output_file:hover {"
                                  f"    background-color: rgb{self.decode_hover_backgroundcolor};"
                                  "}"
-                                 "#decode:pressed, #encode:pressed{"
+                                 "#decode:pressed, #encode:pressed, #input_file:pressed, #output_file:pressed{"
                                  f"    background-color: rgb{self.decode_pressed_backgroundcolor};"
                                  f"    color: rgba{self.decode_color + (.7,)};"
                                  "}"
                                  "#light {"
                                  "    background-color: rgba(0, 0, 0, 0);"
+                                 "    opacity: .5;"
                                  "}")
         self.key.setStyleSheet("padding-top: 4px;")
         self.footer.setStyleSheet("background-color: rgba(0, 0, 0, 0);"
@@ -169,7 +172,7 @@ class Ui_MainWindow(object):
 
         self.decode = QtWidgets.QPushButton(self.centralwidget)
         self.decode.setEnabled(True)
-        self.decode.setGeometry(QtCore.QRect(270, 490, 161, 61))
+        self.decode.setGeometry(QtCore.QRect(270, 500, 161, 61))
         self.decode.setFont(font)
         self.decode.setCheckable(True)
         self.decode.setObjectName("decode")
@@ -177,7 +180,7 @@ class Ui_MainWindow(object):
         self.encode = QtWidgets.QPushButton(self.centralwidget)
         self.encode.setObjectName("encode")
         self.encode.setEnabled(True)
-        self.encode.setGeometry(QtCore.QRect(50, 490, 161, 61))
+        self.encode.setGeometry(QtCore.QRect(50, 500, 161, 61))
         self.encode.setFont(font)
         self.encode.setCheckable(True)
 
@@ -213,7 +216,7 @@ class Ui_MainWindow(object):
         self.io.addWidget(self.output)
 
         self.layoutWidget1 = QtWidgets.QWidget(self.centralwidget)
-        self.layoutWidget1.setGeometry(QtCore.QRect(20, 260, 441, 131))
+        self.layoutWidget1.setGeometry(QtCore.QRect(20, 280, 440, 130))
         self.layoutWidget1.setObjectName("layoutWidget1")
 
         self.codes = QtWidgets.QVBoxLayout(self.layoutWidget1)
@@ -222,9 +225,6 @@ class Ui_MainWindow(object):
         self.codes.setObjectName("codes")
 
         self.code1 = QtWidgets.QRadioButton(self.layoutWidget1)
-        self.code1.setTabletTracking(False)
-        self.code1.setAcceptDrops(False)
-        self.code1.setAutoFillBackground(False)
         self.code1.setObjectName("code1")
         self.codes.addWidget(self.code1)
 
@@ -241,11 +241,19 @@ class Ui_MainWindow(object):
         self.codes.addWidget(self.code4)
 
         self.key = QtWidgets.QPlainTextEdit(self.centralwidget)
-        self.key.setGeometry(QtCore.QRect(130, 420, 221, 32))
+        self.key.setGeometry(QtCore.QRect(130, 430, 221, 32))
         self.key.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.key.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.key.setLineWrapMode(QtWidgets.QPlainTextEdit.NoWrap)
         self.key.setObjectName("key")
+
+        self.input_file = QtWidgets.QPushButton(self.centralwidget)
+        self.input_file.setObjectName("input_file")
+        self.input_file.setGeometry(QtCore.QRect(40, 230, 185, 35))
+
+        self.output_file = QtWidgets.QPushButton(self.centralwidget)
+        self.output_file.setObjectName("output_file")
+        self.output_file.setGeometry(QtCore.QRect(255, 230, 185, 35))
 
         self.updateTheme(self)
 
@@ -266,3 +274,5 @@ class Ui_MainWindow(object):
         self.code2.setText(_translate("MainWindow", "Шифр замены с умножением"))
         self.code3.setText(_translate("MainWindow", "Шифр Виженера"))
         self.code4.setText(_translate("MainWindow", "XOR шифрование"))
+        self.input_file.setText(_translate("MainWindow", "Вставить текст из файла"))
+        self.output_file.setText(_translate("MainWindow", "Сохранить текст в файл"))

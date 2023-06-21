@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog
 from gui import Ui_MainWindow
 from cesar import cesar_encode, cesar_decode
-from multymy import crypto, decrypto
+from multimy import crypto, decrypto
 from vigener import vigener_encode, vigener_decode
 from xor_crypt import encrypt_xor
 
@@ -21,6 +21,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.decode.clicked.connect(self.text_decode)
 
             self.key.textChanged.connect(self.key_enter_delete)
+
+            self.input_file.clicked.connect(self.input_text_from_file)
+            self.output_file.clicked.connect(self.save_file_with_text)
         else:
             self.itext = ''
             self.ofile = ''
@@ -53,6 +56,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         text = self.key.toPlainText()
         if '\n' in text:
             self.key.setPlainText(text.replace('\n', ''))
+
+    def open_file(self, text: str = '', action: str = 'r') -> str:
+        filename = QFileDialog.getOpenFileName(self, 'Выбор файла', '', 'Text files (*.txt)')[0]
+        if filename == '' or filename.split('.')[-1] != 'txt':
+            return ''
+        with open(filename, action, encoding='utf-8') as file:
+            if action == 'r':
+                return file.read()
+            elif action == 'w+':
+                file.write(text)
+                return 'Текст успешно сохранен в файл'
+
+    def input_text_from_file(self):
+        text = self.open_file()
+        self.input.setPlainText(text)
+
+    def save_file_with_text(self):
+        self.open_file(self.output.toPlainText(), action='w+')
 
     def changeTheme(self):
         """ Меняет тему с темной на светлую и наоборот """
@@ -162,8 +183,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     \r    Шифр замены с умножением (ключ должен быть числом)
                     \r    Шифр Виженера
                     \r    XOR шифрование\n
-                    \rДоступные флаги:\n
-                    \r    Для большей надёжности указывайте значение флагов в одинарных или двойных кавычках\n
+                    \rДоступные флаги:
+                    \r
+                    \r    Для большей надёжности указывайте значение флагов в одинарных или двойных кавычках
+                    \r
+                    \r    При шифровании рекомендуется сохранять результат в файл,
+                    \r    так как некоторые символы в консоли могут отображаться некорректно
+                    \r
                     \r    --help                         Выводит данное сообщение
                     \r    -i   -itext  "Текст"           Принимает на вход текст для шифрования/дешифрования
                     \r    -if  -ifile  "Путь до файла"   Принимает на вход файл для шифрования/дешифрования
@@ -180,7 +206,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         for i, arg in enumerate(args):
             try:
                 self.current_arg = args[i + 1]
-            except Exception as _ex:
+            except:
                 if arg in flags_with_args_list:
                     print(f'Значение аргумента для флага {arg} не может быть пустым')
                     return 1
@@ -206,8 +232,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 elif arg == '--xor':
                     self.action_func = encrypt_xor
         if not self.action_func:
-            print('Укажите один из следующих типов действия --cesar_encode --cesar_decode \
-                  \r--multitable_encode --multitable_encode --vigener_encode --vigener_decode --xor')
+            print('Укажите один из следующих типов действия --cesar_encode --cesar_decode --multitable_encode\
+                  \n\r--multitable_encode --vigener_encode --vigener_decode --xor')
         elif self.action_func and self.ikey:
             if 'cesar' in self.action_func.__name__ or 'multitable' in self.action_func.__name__:
                 self.otext = self.result_text(self.action_func, 1, cmd_mode=1)
@@ -218,7 +244,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if self.otext:
             if not self.ofile:
                 print(f"Исходный текст: {self.itext}",
-                      f"Результат операции: {self.otext}")
+                      f"Результат операции: {self.otext}", sep='\n')
             else:
                 print(f"Исходный текст: {self.itext}")
                 try:
