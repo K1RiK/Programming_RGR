@@ -76,7 +76,6 @@ class Ui_MainWindow(object):
                                  "    background-color: rgba(0, 0, 0, 0);"
                                  "    opacity: .5;"
                                  "}")
-        self.key.setStyleSheet("padding-top: 4px;")
         self.footer.setStyleSheet("background-color: rgba(0, 0, 0, 0);"
                                   f"color: rgba{self.footer_color};"
                                   "font-weight: bold;"
@@ -96,11 +95,6 @@ class Ui_MainWindow(object):
         MainWindow.resize(480, 640)
         MainWindow.setMinimumSize(QtCore.QSize(480, 640))
         MainWindow.setMaximumSize(QtCore.QSize(480, 640))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(1)
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
-        MainWindow.setFont(font)
         MainWindow.setInputMethodHints(QtCore.Qt.ImhNone)
 
         self.centralwidget = QtWidgets.QWidget(MainWindow)
@@ -164,32 +158,23 @@ class Ui_MainWindow(object):
         self.light.setGeometry(QtCore.QRect(430, 590, 32, 32))
         self.light.setObjectName("light")
 
-        font = QtGui.QFont()
-        font.setFamily("Arial Black")
-        font.setPointSize(1)
-        font.setKerning(True)
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
-
         self.decode = QtWidgets.QPushButton(self.centralwidget)
-        self.decode.setEnabled(True)
         self.decode.setGeometry(QtCore.QRect(270, 500, 161, 61))
-        self.decode.setFont(font)
-        self.decode.setCheckable(True)
         self.decode.setObjectName("decode")
+        self.decode.setEnabled(True)
+        self.decode.setCheckable(True)
 
         self.encode = QtWidgets.QPushButton(self.centralwidget)
+        self.encode.setGeometry(QtCore.QRect(50, 500, 161, 61))
         self.encode.setObjectName("encode")
         self.encode.setEnabled(True)
-        self.encode.setGeometry(QtCore.QRect(50, 500, 161, 61))
-        self.encode.setFont(font)
         self.encode.setCheckable(True)
 
         self.footer = QtWidgets.QPlainTextEdit(self.centralwidget)
         self.footer.setGeometry(QtCore.QRect(10, 590, 275, 41))
-        self.footer.setContextMenuPolicy(QtCore.Qt.PreventContextMenu)
+        self.footer.setObjectName("footer")
         self.footer.setReadOnly(True)
         self.footer.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-        self.footer.setObjectName("footer")
 
         self.layoutWidget = QtWidgets.QWidget(self.centralwidget)
         self.layoutWidget.setGeometry(QtCore.QRect(20, 30, 441, 194))
@@ -199,19 +184,16 @@ class Ui_MainWindow(object):
         self.io.setContentsMargins(0, 0, 0, 0)
         self.io.setObjectName("io")
 
-        font = QtGui.QFont()
-        font.setFamily("Lucida Console")
-        font.setPointSize(1)
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
-
         self.input = QtWidgets.QPlainTextEdit(self.layoutWidget)
-        self.input.setFont(font)
         self.input.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.input.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.input.setObjectName("input")
         self.io.addWidget(self.input)
 
         self.output = QtWidgets.QPlainTextEdit(self.layoutWidget)
         self.output.setReadOnly(True)
+        self.input.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.input.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.output.setObjectName("output")
         self.io.addWidget(self.output)
 
@@ -220,7 +202,6 @@ class Ui_MainWindow(object):
         self.layoutWidget1.setObjectName("layoutWidget1")
 
         self.codes = QtWidgets.QVBoxLayout(self.layoutWidget1)
-        self.codes.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
         self.codes.setContentsMargins(0, 0, 0, 0)
         self.codes.setObjectName("codes")
 
@@ -240,20 +221,18 @@ class Ui_MainWindow(object):
         self.code4.setObjectName("code4")
         self.codes.addWidget(self.code4)
 
-        self.key = QtWidgets.QPlainTextEdit(self.centralwidget)
+        self.key = QtWidgets.QLineEdit(self.centralwidget)
         self.key.setGeometry(QtCore.QRect(130, 430, 221, 32))
-        self.key.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.key.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.key.setLineWrapMode(QtWidgets.QPlainTextEdit.NoWrap)
         self.key.setObjectName("key")
+        self.key.setMaxLength(2048)
 
         self.input_file = QtWidgets.QPushButton(self.centralwidget)
-        self.input_file.setObjectName("input_file")
         self.input_file.setGeometry(QtCore.QRect(40, 230, 185, 35))
+        self.input_file.setObjectName("input_file")
 
         self.output_file = QtWidgets.QPushButton(self.centralwidget)
-        self.output_file.setObjectName("output_file")
         self.output_file.setGeometry(QtCore.QRect(255, 230, 185, 35))
+        self.output_file.setObjectName("output_file")
 
         self.updateTheme(self)
 

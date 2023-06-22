@@ -8,8 +8,10 @@
 
 
 def cesar_encode(text: str, key: int) -> str:
+    key %= 1114112
     return ''.join([chr((ord(char) + key) % 1114112) for char in text])
 
 
 def cesar_decode(text: str, key: int) -> str:
+    key %= 1114112
     return ''.join([chr((ord(char) - key) % 1114112) for char in text])

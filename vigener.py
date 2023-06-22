@@ -10,12 +10,14 @@
 def vigener_encode(text: str, key: str) -> str:
     key_lenght = len(key)
     if key_lenght:
-        return ''.join([chr((ord(char) + ord(key[index % key_lenght])) % 1114112) for index, char in enumerate(text)])
+        result = [chr((ord(char) + ord(key[index % key_lenght])) + 32 % 1114112) for index, char in enumerate(text)]
+        return ''.join(result)
     return ''
 
 
 def vigener_decode(text: str, key: str) -> str:
     key_lenght = len(key)
     if key_lenght:
-        return ''.join([chr((ord(char) - ord(key[index % key_lenght])) % 1114112) for index, char in enumerate(text)])
+        result = [chr((ord(char) - 32 - ord(key[index % key_lenght])) % 1114112) for index, char in enumerate(text)]
+        return ''.join(result)
     return ''
